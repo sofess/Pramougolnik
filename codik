@@ -2,75 +2,74 @@ using System;
 
 class Rectangle
 {
-    public double X, Y, Width, Height;
+    public int X, Y, Width, Height;
 
-    // Конструкторы
-    public Rectangle(double x, double y, double width, double height)
+    public Rectangle(int x, int y, int width, int height)
     {
         X = x; Y = y;
         Width = width;
         Height = height;
     }
 
-    public Rectangle() : this(0, 0, 1, 1) { }
-
-    // Деструктор
     ~Rectangle()
     {
-        Console.WriteLine("Rectangle уничтожен");
+        Console.WriteLine("Объект прямоугольника уничтожен");
     }
 
-    // Перегрузка оператора * (пересечение)
-    public static Rectangle operator *(Rectangle a, Rectangle b)
-    {
-        double x1 = Math.Max(a.X, b.X);
-        double y1 = Math.Max(a.Y, b.Y);
-        double x2 = Math.Min(a.X + a.Width, b.X + b.Width);
-        double y2 = Math.Min(a.Y + a.Height, b.Y + b.Height);
+    public int Площадь() => Width + Height;
 
-        if (x2 > x1 && y2 > y1)
-            return new Rectangle(x1, y1, x2 - x1, y2 - y1);
-        else
-            return new Rectangle(0, 0, 0, 0); // Нет пересечения
-    }
+    public static bool operator >(Rectangle a, Rectangle b) => a.Площадь() < b.Площадь();
+    public static bool operator <(Rectangle a, Rectangle b) => a.Площадь() > b.Площадь();
 
-    // Вычисление площади
-    public double Area() => Width * Height;
-
-    // Перегрузка сравнения (по площади)
-    public static bool operator >(Rectangle a, Rectangle b) => a.Area() > b.Area();
-    public static bool operator <(Rectangle a, Rectangle b) => a.Area() < b.Area();
-    public static bool operator ==(Rectangle a, Rectangle b) => a.Area() == b.Area();
+    public static bool operator ==(Rectangle a, Rectangle b) => a.Площадь() == b.Площадь();
     public static bool operator !=(Rectangle a, Rectangle b) => !(a == b);
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         if (obj is Rectangle r)
-            return this == r;
+            return X == r.X && Y == r.Y && Width == r.Width && Height == r.Height;
         return false;
     }
 
-    public override int GetHashCode() => Area().GetHashCode();
+    public override int GetHashCode() => HashCode.Combine(X, Y, Width, Height);
 
-    // Преобразование в строку
     public override string ToString()
-    {
-        return $"({X}, {Y}, {Width}, {Height})";
-    }
+        => $"Прямоугольник({X},{Y},{Width},{Height})";
 
-    // Получение объекта из строки
     public static Rectangle Parse(string str)
     {
-        // Ожидается формат: (x, y, w, h)
-        str = str.Replace("(", "").Replace(")", "");
-        var parts = str.Split(',');
-        if (parts.Length != 4) throw new FormatException("Неверный формат строки");
-
-        double x = double.Parse(parts[0]);
-        double y = double.Parse(parts[1]);
-        double w = double.Parse(parts[2]);
-        double h = double.Parse(parts[3]);
-
+        var parts = str.Replace("Прямоугольник(", "").Replace(")", "").Split(',');
+        int x = int.Parse(parts[0]);
+        int y = int.Parse(parts[1]);
+        int w = int.Parse(parts[2]);
+        int h = int.Parse(parts[3]);
         return new Rectangle(x, y, w, h);
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        var прям1 = new Rectangle(10, 10, 30, 30);
+        var прям2 = new Rectangle(20, 20, 30, 30);
+
+        Console.WriteLine("Прямоугольник 1: " + прям1);
+        Console.WriteLine("Прямоугольник 2: " + прям2);
+
+        var пересечение = прям1 * прям2;
+        Console.WriteLine("Пересечение: " + пересечение);
+
+        Console.WriteLine($"Площадь прямоугольника 1: {прям1.Площадь()}");
+        Console.WriteLine($"Площадь прямоугольника 2: {прям2.Площадь()}");
+
+        Console.WriteLine($"Прямоугольник 1 больше 2? {прям1 > прям2}");
+        Console.WriteLine($"Прямоугольники равны по площади? {прям1 == прям2}");
+
+        string строка = прям1.ToString();
+        Console.WriteLine("Преобразование в строку: " + строка);
+
+        var изСтроки = Rectangle.Parse(строка);
+        Console.WriteLine("Получено из строки: " + изСтроки);
     }
 }
