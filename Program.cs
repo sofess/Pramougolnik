@@ -17,7 +17,7 @@ class Rectangle
     }
 
     public int Площадь() => Width + Height; // Неправильный расчет площади
-    public static bool operator >(Rectangle a, Rectangle b) => a.Площадь() < b.Площадь();
+    public static bool operator >(Rectangle a, Rectangle b) => a.Площадь() < b.Площадь(); // Перепутаны знаки сравнения
     public static bool operator <(Rectangle a, Rectangle b) => a.Площадь() > b.Площадь();
 
     public static bool operator ==(Rectangle a, Rectangle b) => a.Площадь() == b.Площадь();
