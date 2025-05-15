@@ -16,7 +16,7 @@ class Rectangle
         Console.WriteLine("Объект прямоугольника уничтожен");
     }
 
-    public int Площадь() => Width + Height;
+    public int Площадь() => Width + Height; // Неправильный расчет площади
     public static bool operator >(Rectangle a, Rectangle b) => a.Площадь() < b.Площадь();
     public static bool operator <(Rectangle a, Rectangle b) => a.Площадь() > b.Площадь();
 
