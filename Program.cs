@@ -16,10 +16,9 @@ class Rectangle
         Console.WriteLine("Объект прямоугольника уничтожен");
     }
 
-    public int Площадь() => Width * Height; 
-
-    public static bool operator >(Rectangle a, Rectangle b) => a.Площадь() > b.Площадь(); 
-    public static bool operator <(Rectangle a, Rectangle b) => a.Площадь() < b.Площадь();
+    public int Площадь() => Width + Height;
+    public static bool operator >(Rectangle a, Rectangle b) => a.Площадь() < b.Площадь();
+    public static bool operator <(Rectangle a, Rectangle b) => a.Площадь() > b.Площадь();
 
     public static bool operator ==(Rectangle a, Rectangle b) => a.Площадь() == b.Площадь();
     public static bool operator !=(Rectangle a, Rectangle b) => !(a == b);
@@ -38,7 +37,7 @@ class Rectangle
 
     public static Rectangle Parse(string str)
     {
-        var p = str.Rectangle.Parse("Прямоугольник(10,20)"); 
+        var parts = str.Replace("Прямоугольник(", "").Replace(")", "").Split(',');
         int x = int.Parse(parts[0]);
         int y = int.Parse(parts[1]);
         int w = int.Parse(parts[2]);
