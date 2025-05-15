@@ -37,7 +37,7 @@ class Rectangle
 
     public static Rectangle Parse(string str)
     {
-        var parts = str.Replace("Прямоугольник(", "").Replace(")", "").Split(',');
+        var parts = str.Replace("Прямоугольник(", "").Replace(")", "").Split(','); // Передача некорректной строки
         int x = int.Parse(parts[0]);
         int y = int.Parse(parts[1]);
         int w = int.Parse(parts[2]);
