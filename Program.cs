@@ -16,9 +16,9 @@ class Rectangle
         Console.WriteLine("Объект прямоугольника уничтожен");
     }
 
-    public int Площадь() => Width + Height; // Неправильный расчет площади
-    public static bool operator >(Rectangle a, Rectangle b) => a.Площадь() < b.Площадь(); // Перепутаны знаки сравнения
-    public static bool operator <(Rectangle a, Rectangle b) => a.Площадь() > b.Площадь();
+    public int Площадь() => Width * Height; // Ошибка исправлена, формула работает правильно
+    public static bool operator >(Rectangle a, Rectangle b) => a.Площадь() > b.Площадь(); // Знаки сравнения изменены на правильные
+    public static bool operator <(Rectangle a, Rectangle b) => a.Площадь() < b.Площадь();
 
     public static bool operator ==(Rectangle a, Rectangle b) => a.Площадь() == b.Площадь();
     public static bool operator !=(Rectangle a, Rectangle b) => !(a == b);
@@ -37,7 +37,10 @@ class Rectangle
 
     public static Rectangle Parse(string str)
     {
-        var parts = str.Replace("Прямоугольник(", "").Replace(")", "").Split(','); // Передача некорректной строки
+        var parts = str.Replace("Прямоугольник(", "").Replace(")", "").Split(','); //// Добавлена проверка количества элементов и обработка ошибок 
+
+        if (parts.Length != 4)
+            throw new FormatException("Неверный формат строки для прямоугольника");
         int x = int.Parse(parts[0]);
         int y = int.Parse(parts[1]);
         int w = int.Parse(parts[2]);
